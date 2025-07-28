@@ -1,5 +1,5 @@
 import { NavLink, Outlet } from "react-router-dom";
-import { Bell, Home, Menu, Package2, Send, Star, User, Settings, HelpCircle } from "lucide-react";
+import { Bell, Home, Menu, Package2, Send, Star, User, Settings, HelpCircle, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { UserNav } from "./UserNav";
@@ -13,6 +13,7 @@ const userNavItems = [
   { to: "/dashboard/transactions", icon: Package2, label: "Transactions" },
   { to: "/dashboard/redeem", icon: Star, label: "Redeem Code" },
   { to: "/dashboard/requests", icon: HelpCircle, label: "Request Points" },
+  { to: "/dashboard/security", icon: Shield, label: "Security" },
   { to: "/dashboard/settings", icon: Settings, label: "Settings" },
 ];
 
