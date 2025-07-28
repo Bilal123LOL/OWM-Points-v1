@@ -16,15 +16,13 @@ const Index = () => {
     return <Navigate to="/login" replace />;
   }
 
-  // We will create these pages in the next steps
   if (profile.role === "Admin") {
     // return <Navigate to="/admin" replace />;
     return <div>Welcome Admin! (Admin Dashboard coming soon)</div>;
   }
 
   if (profile.role === "Regular User") {
-    // return <Navigate to="/dashboard" replace />;
-    return <div>Welcome User! (User Dashboard coming soon)</div>;
+    return <Navigate to="/dashboard" replace />;
   }
 
   return <Navigate to="/login" replace />;
