@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState, useCallback } from "react";
 import { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -18,6 +18,7 @@ type AuthContextType = {
   loading: boolean;
   login: (accountNumber: string, password: string) => Promise<any>;
   logout: () => Promise<void>;
+  refetchProfile: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -27,6 +28,24 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const fetchProfile = useCallback(async () => {
+    if (user) {
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", user.id)
+        .single();
+
+      if (error) {
+        console.error("Error fetching profile:", error);
+      } else {
+        setProfile(data as Profile);
+      }
+    } else {
+      setProfile(null);
+    }
+  }, [user]);
 
   useEffect(() => {
     const getSession = async () => {
@@ -57,29 +76,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   useEffect(() => {
-    if (user && !profile) {
-      const fetchProfile = async () => {
-        const { data, error } = await supabase
-          .from("profiles")
-          .select("*")
-          .eq("id", user.id)
-          .single();
-
-        if (error) {
-          console.error("Error fetching profile:", error);
-        } else {
-          setProfile(data as Profile);
-        }
-      };
-      fetchProfile();
-    } else if (!user) {
-      setProfile(null);
-    }
-  }, [user, profile]);
+    fetchProfile();
+  }, [fetchProfile]);
 
   const login = async (accountNumber: string, password: string) => {
-    // We use a dummy domain because Supabase Auth requires an email format.
-    // This is hidden from the user.
     const email = `${accountNumber}@owmpoints.app`;
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
@@ -101,6 +101,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     loading,
     login,
     logout,
+    refetchProfile: fetchProfile,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
