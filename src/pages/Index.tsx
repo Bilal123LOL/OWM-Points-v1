@@ -1,19 +1,33 @@
-// Update this page (the content is just a fallback if you fail to update the page)
-
-import { MadeWithDyad } from "@/components/made-with-dyad";
+import { useAuth } from "@/context/AuthContext";
+import { Navigate } from "react-router-dom";
 
 const Index = () => {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">
-          Start building your amazing project here!
-        </p>
+  const { profile, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p>Loading...</p>
       </div>
-      <MadeWithDyad />
-    </div>
-  );
+    );
+  }
+
+  if (!profile) {
+    return <Navigate to="/login" replace />;
+  }
+
+  // We will create these pages in the next steps
+  if (profile.role === "Admin") {
+    // return <Navigate to="/admin" replace />;
+    return <div>Welcome Admin! (Admin Dashboard coming soon)</div>;
+  }
+
+  if (profile.role === "Regular User") {
+    // return <Navigate to="/dashboard" replace />;
+    return <div>Welcome User! (User Dashboard coming soon)</div>;
+  }
+
+  return <Navigate to="/login" replace />;
 };
 
 export default Index;
