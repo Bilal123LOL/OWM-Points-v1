@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { Row } from "@tanstack/react-table"
 import { MoreHorizontal } from "lucide-react"
+import { useNavigate } from "react-router-dom"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -25,8 +26,13 @@ export function DataTableRowActions<TData extends Profile>({
   row,
 }: DataTableRowActionsProps<TData>) {
   const user = row.original
+  const navigate = useNavigate()
   const [isSuspendDialogOpen, setIsSuspendDialogOpen] = useState(false)
   const [isPointsDialogOpen, setIsPointsDialogOpen] = useState(false)
+
+  const handleViewTransactions = () => {
+    navigate(`/admin/transactions?user=${encodeURIComponent(user.full_name)}`)
+  }
 
   return (
     <>
@@ -45,7 +51,9 @@ export function DataTableRowActions<TData extends Profile>({
             Copy Account Number
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>View transactions</DropdownMenuItem>
+          <DropdownMenuItem onClick={handleViewTransactions}>
+            View transactions
+          </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setIsPointsDialogOpen(true)}>
             Add/Deduct points
           </DropdownMenuItem>
