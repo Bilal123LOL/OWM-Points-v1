@@ -17,8 +17,7 @@ const Index = () => {
   }
 
   if (profile.role === "Admin") {
-    // return <Navigate to="/admin" replace />;
-    return <div>Welcome Admin! (Admin Dashboard coming soon)</div>;
+    return <Navigate to="/admin" replace />;
   }
 
   if (profile.role === "Regular User") {
