@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import { AuthProvider } from "./context/AuthContext";
+import { ThemeProvider } from "./context/ThemeContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 // User Dashboard Pages
@@ -36,43 +37,45 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <BrowserRouter>
-        <AuthProvider>
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            
-            <Route element={<ProtectedRoute />}>
-              <Route path="/" element={<Index />} />
+      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+        <BrowserRouter>
+          <AuthProvider>
+            <Routes>
+              <Route path="/login" element={<Login />} />
               
-              <Route path="/dashboard" element={<DashboardLayout />}>
-                <Route index element={<Navigate to="balance" replace />} />
-                <Route path="balance" element={<Balance />} />
-                <Route path="transfer" element={<Transfer />} />
-                <Route path="transactions" element={<Transactions />} />
-                <Route path="redeem" element={<Redeem />} />
-                <Route path="requests" element={<Requests />} />
-                <Route path="settings" element={<Settings />} />
-              </Route>
+              <Route element={<ProtectedRoute />}>
+                <Route path="/" element={<Index />} />
+                
+                <Route path="/dashboard" element={<DashboardLayout />}>
+                  <Route index element={<Navigate to="balance" replace />} />
+                  <Route path="balance" element={<Balance />} />
+                  <Route path="transfer" element={<Transfer />} />
+                  <Route path="transactions" element={<Transactions />} />
+                  <Route path="redeem" element={<Redeem />} />
+                  <Route path="requests" element={<Requests />} />
+                  <Route path="settings" element={<Settings />} />
+                </Route>
 
-              <Route element={<ProtectedRoute allowedRoles={['Admin']} />}>
-                <Route path="/admin" element={<AdminLayout />}>
-                  <Route index element={<Navigate to="dashboard" replace />} />
-                  <Route path="dashboard" element={<AdminDashboardPage />} />
-                  <Route path="users" element={<UserManagement />} />
-                  <Route path="transactions" element={<AdminTransactions />} />
-                  <Route path="codes" element={<Codes />} />
-                  <Route path="announcements" element={<Announcements />} />
-                  <Route path="requests" element={<PointRequests />} />
-                  <Route path="security" element={<Security />} />
-                  <Route path="settings" element={<AdminSettings />} />
+                <Route element={<ProtectedRoute allowedRoles={['Admin']} />}>
+                  <Route path="/admin" element={<AdminLayout />}>
+                    <Route index element={<Navigate to="dashboard" replace />} />
+                    <Route path="dashboard" element={<AdminDashboardPage />} />
+                    <Route path="users" element={<UserManagement />} />
+                    <Route path="transactions" element={<AdminTransactions />} />
+                    <Route path="codes" element={<Codes />} />
+                    <Route path="announcements" element={<Announcements />} />
+                    <Route path="requests" element={<PointRequests />} />
+                    <Route path="security" element={<Security />} />
+                    <Route path="settings" element={<AdminSettings />} />
+                  </Route>
                 </Route>
               </Route>
-            </Route>
 
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </AuthProvider>
-      </BrowserRouter>
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </AuthProvider>
+        </BrowserRouter>
+      </ThemeProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );

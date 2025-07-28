@@ -5,6 +5,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { UserNav } from "./UserNav";
 import { useAuth } from "@/context/AuthContext";
 import { cn } from "@/lib/utils";
+import { ThemeToggle } from "./ThemeToggle";
 
 const userNavItems = [
   { to: "/dashboard/balance", icon: Home, label: "Balance" },
@@ -93,6 +94,7 @@ const DashboardLayout = () => {
               <p className={cn("text-3xl font-bold", pointsColor)}>{profile?.points ?? 0} Points</p>
             </div>
           </div>
+          <ThemeToggle />
           <UserNav />
         </header>
         <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">

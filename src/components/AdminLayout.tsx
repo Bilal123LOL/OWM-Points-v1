@@ -16,6 +16,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { UserNav } from "./UserNav";
 import { useAuth } from "@/context/AuthContext";
 import { cn } from "@/lib/utils";
+import { ThemeToggle } from "./ThemeToggle";
 
 const adminNavItems = [
   { to: "/admin/dashboard", icon: Home, label: "Dashboard" },
@@ -104,6 +105,7 @@ const AdminLayout = () => {
               <p className="text-3xl font-bold">{profile?.full_name}</p>
             </div>
           </div>
+          <ThemeToggle />
           <UserNav />
         </header>
         <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
