@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Profile } from "@/context/AuthContext"
 import { SuspendUserDialog } from "./SuspendUserDialog"
+import { AddDeductPointsDialog } from "./AddDeductPointsDialog"
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>
@@ -25,6 +26,7 @@ export function DataTableRowActions<TData extends Profile>({
 }: DataTableRowActionsProps<TData>) {
   const user = row.original
   const [isSuspendDialogOpen, setIsSuspendDialogOpen] = useState(false)
+  const [isPointsDialogOpen, setIsPointsDialogOpen] = useState(false)
 
   return (
     <>
@@ -44,7 +46,9 @@ export function DataTableRowActions<TData extends Profile>({
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem>View transactions</DropdownMenuItem>
-          <DropdownMenuItem>Add/Deduct points</DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setIsPointsDialogOpen(true)}>
+            Add/Deduct points
+          </DropdownMenuItem>
           <DropdownMenuItem>Reset password</DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
@@ -59,6 +63,11 @@ export function DataTableRowActions<TData extends Profile>({
         user={user}
         isOpen={isSuspendDialogOpen}
         onOpenChange={setIsSuspendDialogOpen}
+      />
+      <AddDeductPointsDialog
+        user={user}
+        isOpen={isPointsDialogOpen}
+        onOpenChange={setIsPointsDialogOpen}
       />
     </>
   )
