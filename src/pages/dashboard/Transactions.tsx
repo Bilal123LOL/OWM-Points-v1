@@ -8,7 +8,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 const fetchTransactions = async (): Promise<Transaction[]> => {
   const { data, error } = await supabase
     .from("transactions")
-    .select("*")
+    .select("*, related_user:related_user_id (full_name)")
     .order("created_at", { ascending: false });
 
   if (error) {

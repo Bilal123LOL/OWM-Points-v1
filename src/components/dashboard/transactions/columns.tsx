@@ -11,6 +11,7 @@ export type Transaction = {
   amount: number;
   note: string | null;
   code_redeemed: string | null;
+  related_user?: { full_name: string } | null;
 };
 
 export const columns: ColumnDef<Transaction>[] = [
@@ -22,6 +23,9 @@ export const columns: ColumnDef<Transaction>[] = [
       let variant: "default" | "secondary" | "destructive" | "outline" = "secondary";
       if (type === 'admin_adjustment') variant = 'outline';
       if (type === 'code_redemption') variant = 'default';
+      if (type === 'transfer_sent') variant = 'destructive';
+      if (type === 'transfer_received') variant = 'default';
+      if (type === 'request_approved') variant = 'default';
       return <Badge variant={variant}>{type.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}</Badge>
     }
   },
@@ -38,6 +42,20 @@ export const columns: ColumnDef<Transaction>[] = [
   {
     accessorKey: "note",
     header: "Description",
+    cell: ({ row }) => {
+      const transaction = row.original;
+      const note = transaction.note;
+      const relatedUser = transaction.related_user?.full_name;
+      let detailText = note || "";
+
+      if (transaction.type === 'transfer_sent' && relatedUser) {
+          detailText = `To: ${relatedUser}. ${note || ''}`;
+      } else if (transaction.type === 'transfer_received' && relatedUser) {
+          detailText = `From: ${relatedUser}. ${note || ''}`;
+      }
+      
+      return <div className="truncate max-w-xs">{detailText}</div>
+    }
   },
   {
     accessorKey: "created_at",
