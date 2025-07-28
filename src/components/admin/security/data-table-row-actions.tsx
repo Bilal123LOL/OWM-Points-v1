@@ -9,10 +9,12 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { SecurityReport } from "./columns"
 import { UpdateReportStatusDialog } from "./UpdateReportStatusDialog"
+import { ViewReportDetailsDialog } from "./ViewReportDetailsDialog"
 
 interface DataTableRowActionsProps {
   row: Row<SecurityReport>
@@ -21,6 +23,7 @@ interface DataTableRowActionsProps {
 export function DataTableRowActions({ row }: DataTableRowActionsProps) {
   const report = row.original
   const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false)
+  const [isViewDialogOpen, setIsViewDialogOpen] = useState(false)
 
   return (
     <>
@@ -33,6 +36,10 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuItem onClick={() => setIsViewDialogOpen(true)}>
+            View Details
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => setIsUpdateDialogOpen(true)}>
             Update Status
           </DropdownMenuItem>
@@ -43,6 +50,10 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
         isOpen={isUpdateDialogOpen}
         onOpenChange={setIsUpdateDialogOpen}
       />
+      <ViewReportDetailsDialog
+        report={report}
+        isOpen={isViewDialogOpen}
+        onOpenChange={setIsViewDialogOpen}
+      />
     </>
   )
-}
